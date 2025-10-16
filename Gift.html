@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Samsung Life Insurance - ลงทะเบียน</title>
+    <style>
+        body {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .app-container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            padding: 40px;
+            width: 100%;
+            max-width: 500px;
+            margin: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .logo {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(45deg, #1e3c72, #2a5298);
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .company-name {
+            color: #1e3c72;
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .subtitle {
+            color: #666;
+            font-size: 16px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e1e5e9;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            box-sizing: border-box;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .gender-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 8px;
+        }
+
+        .radio-option {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            padding: 10px 15px;
+            border: 2px solid #e1e5e9;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            flex: 1;
+            justify-content: center;
+        }
+
+        .radio-option:hover {
+            border-color: #667eea;
+            background-color: #f8f9ff;
+        }
+
+        .radio-option input[type="radio"] {
+            width: auto;
+            margin: 0;
+        }
+
+        .radio-option.selected {
+            border-color: #667eea;
+            background-color: #667eea;
+            color: white;
+        }
+
+        .submit-btn {
+            width: 100%;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        .success-message {
+            background: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+            text-align: center;
+            display: none;
+            border: 1px solid #c3e6cb;
+        }
+
+        .welcome-notice {
+            background: #e7f3ff;
+            color: #0066cc;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 14px;
+            border: 1px solid #b3d9ff;
+        }
+
+        @media (max-width: 600px) {
+            .app-container {
+                padding: 30px 20px;
+                margin: 10px;
+            }
+            
+            .gender-group {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <main class="app-container">
+        <header class="header">
+            <div class="logo">SL</div>
+            <h1 class="company-name">Samsung Life Insurance</h1>
+            <p class="subtitle">บริษัทวิภาวดี - ลงทะเบียนสมาชิก</p>
+        </header>
+
+        <div class="welcome-notice">
+            🎯 ยินดีต้อนรับสู่ระบบลงทะเบียนออนไลน์
+            <br><small>กรุณากรอกข้อมูลให้ครบถ้วนเพื่อดำเนินการลงทะเบียน</small>
+        </div>
+
+        <form id="registrationForm">
+            <div class="form-group">
+                <label for="fullName">ชื่อ-นามสกุล *</label>
+                <input type="text" id="fullName" name="fullName" required placeholder="กรุณากรอกชื่อ-นามสกุล">
+            </div>
+
+            <div class="form-group">
+                <label for="age">อายุ *</label>
+                <input type="number" id="age" name="age" required min="18" max="100" placeholder="กรุณากรอกอายุ">
+            </div>
+
+            <div class="form-group">
+                <label for="phone">หมายเลขโทรศัพท์ *</label>
+                <input type="tel" id="phone" name="phone" required placeholder="กรุณากรอกหมายเลขโทรศัพท์">
+            </div>
+
+            <div class="form-group">
+                <label for="address">ที่อยู่ *</label>
+                <input type="text" id="address" name="address" required placeholder="กรุณากรอกที่อยู่">
+            </div>
+
+            <div class="form-group">
+                <label>เพศ *</label>
+                <div class="gender-group">
+                    <div class="radio-option" onclick="selectGender('male')">
+                        <input type="radio" id="male" name="gender" value="male" required>
+                        <label for="male">👨 ชาย</label>
+                    </div>
+                    <div class="radio-option" onclick="selectGender('female')">
+                        <input type="radio" id="female" name="gender" value="female" required>
+                        <label for="female">👩 หญิง</label>
+                    </div>
+                </div>
+            </div>
+
+            <button type="submit" class="submit-btn">💾 บันทึก</button>
+        </form>
+
+        <div id="successMessage" class="success-message">
+            ✅ บันทึกข้อมูลเรียบร้อยแล้ว! ขอบคุณที่ลงทะเบียนกับ Samsung Life Insurance
+        </div>
+
+        <!-- Admin Panel (Hidden by default) -->
+        <div id="adminPanel" style="display: none;">
+            <div style="border-top: 2px solid #e1e5e9; margin-top: 30px; padding-top: 30px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <h2 style="color: #1e3c72; margin: 0;">📊 ข้อมูลผู้ลงทะเบียน</h2>
+                    <button onclick="hideAdminPanel()" style="background: #dc3545; color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer;">ปิด</button>
+                </div>
+                
+                <div style="background: #f8f9fa; padding: 15px; border-radius: 10px; margin-bottom: 20px;">
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; text-align: center;">
+                        <div>
+                            <div style="font-size: 24px; font-weight: bold; color: #667eea;" id="totalCount">0</div>
+                            <div style="color: #666; font-size: 14px;">ผู้ลงทะเบียนทั้งหมด</div>
+                        </div>
+                        <div>
+                            <div style="font-size: 24px; font-weight: bold; color: #28a745;" id="maleCount">0</div>
+                            <div style="color: #666; font-size: 14px;">ชาย</div>
+                        </div>
+                        <div>
+                            <div style="font-size: 24px; font-weight: bold; color: #e83e8c;" id="femaleCount">0</div>
+                            <div style="color: #666; font-size: 14px;">หญิง</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="max-height: 400px; overflow-y: auto; border: 1px solid #e1e5e9; border-radius: 10px;">
+                    <table style="width: 100%; border-collapse: collapse;">
+                        <thead style="background: #f8f9fa; position: sticky; top: 0;">
+                            <tr>
+                                <th style="padding: 12px; text-align: left; border-bottom: 1px solid #e1e5e9; font-size: 14px;">ID</th>
+                                <th style="padding: 12px; text-align: left; border-bottom: 1px solid #e1e5e9; font-size: 14px;">ชื่อ-นามสกุล</th>
+                                <th style="padding: 12px; text-align: left; border-bottom: 1px solid #e1e5e9; font-size: 14px;">อายุ</th>
+                                <th style="padding: 12px; text-align: left; border-bottom: 1px solid #e1e5e9; font-size: 14px;">เพศ</th>
+                                <th style="padding: 12px; text-align: left; border-bottom: 1px solid #e1e5e9; font-size: 14px;">โทรศัพท์</th>
+                                <th style="padding: 12px; text-align: left; border-bottom: 1px solid #e1e5e9; font-size: 14px;">วันที่ลงทะเบียน</th>
+                            </tr>
+                        </thead>
+                        <tbody id="registrationTableBody">
+                            <tr>
+                                <td colspan="6" style="padding: 20px; text-align: center; color: #666;">ยังไม่มีข้อมูลผู้ลงทะเบียน</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div style="margin-top: 15px; display: flex; gap: 10px; flex-wrap: wrap;">
+                    <button onclick="exportData()" style="background: #28a745; color: white; border: none; padding: 10px 15px; border-radius: 5px; cursor: pointer; font-size: 14px;">📥 ส่งออกข้อมูล</button>
+                    <button onclick="clearAllData()" style="background: #dc3545; color: white; border: none; padding: 10px 15px; border-radius: 5px; cursor: pointer; font-size: 14px;">🗑️ ลบข้อมูลทั้งหมด</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Storage system for registration data (hidden from users)
+        let registrationDatabase = [];
+        let registrationCounter = 1;
+
+        function selectGender(gender) {
+            // Remove selected class from all options
+            document.querySelectorAll('.radio-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            
+            // Add selected class to clicked option
+            event.currentTarget.classList.add('selected');
+            
+            // Check the radio button
+            document.getElementById(gender).checked = true;
+        }
+
+        function saveRegistrationData(data) {
+            // Create registration record with timestamp and ID
+            const registration = {
+                id: registrationCounter++,
+                fullName: data.fullName,
+                age: parseInt(data.age),
+                phone: data.phone,
+                address: data.address,
+                gender: data.gender,
+                registrationDate: new Date().toISOString(),
+                timestamp: Date.now()
+            };
+            
+            // Store in database array
+            registrationDatabase.push(registration);
+            
+            // Also store in localStorage for persistence
+            localStorage.setItem('samsungLifeRegistrations', JSON.stringify(registrationDatabase));
+            
+            // Log for system tracking (users won't see this)
+            console.log('Registration saved:', registration);
+            console.log('Total registrations:', registrationDatabase.length);
+            
+            return registration.id;
+        }
+
+        // Load existing data on page load
+        window.addEventListener('load', function() {
+            const savedData = localStorage.getItem('samsungLifeRegistrations');
+            if (savedData) {
+                registrationDatabase = JSON.parse(savedData);
+                registrationCounter = registrationDatabase.length > 0 ? 
+                    Math.max(...registrationDatabase.map(r => r.id)) + 1 : 1;
+            }
+        });
+
+        document.getElementById('registrationForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Get form data
+            const formData = new FormData(this);
+            const data = {};
+            for (let [key, value] of formData.entries()) {
+                data[key] = value;
+            }
+            
+            // Simulate saving process
+            const submitBtn = document.querySelector('.submit-btn');
+            const originalText = submitBtn.innerHTML;
+            
+            submitBtn.innerHTML = '⏳ กำลังบันทึก...';
+            submitBtn.disabled = true;
+            
+            setTimeout(() => {
+                // Save registration data to system
+                const registrationId = saveRegistrationData(data);
+                
+                // Show success message
+                const successMsg = document.getElementById('successMessage');
+                successMsg.innerHTML = ✅ บันทึกข้อมูลเรียบร้อยแล้ว! ขอบคุณที่ลงทะเบียนกับ Samsung Life Insurance;
+                successMsg.style.display = 'block';
+                
+                // Reset form
+                this.reset();
+                document.querySelectorAll('.radio-option').forEach(option => {
+                    option.classList.remove('selected');
+                });
+                
+                // Reset button
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+                
+                // Hide success message after 5 seconds
+                setTimeout(() => {
+                    successMsg.style.display = 'none';
+                }, 5000);
+                
+            }, 1500);
+        });
+
+        // Add input validation styling
+        document.querySelectorAll('input, select').forEach(input => {
+            input.addEventListener('blur', function() {
+                if (this.value.trim() === '' && this.required) {
+                    this.style.borderColor = '#e74c3c';
+                } else {
+                    this.style.borderColor = '#e1e5e9';
+                }
+            });
+        });
+
+        // Admin Panel Functions
+        let longPressTimer;
+        
+        // Add long press event to logo for admin access
+        document.querySelector('.logo').addEventListener('mousedown', function() {
+            longPressTimer = setTimeout(() => {
+                showAdminPanel();
+            }, 3000);
+        });
+        
+        document.querySelector('.logo').addEventListener('mouseup', function() {
+            clearTimeout(longPressTimer);
+        });
+        
+        document.querySelector('.logo').addEventListener('mouseleave', function() {
+            clearTimeout(longPressTimer);
+        });
+
+        function showAdminPanel() {
+            // Show password prompt
+            showPasswordPrompt();
+        }
+
+        function showPasswordPrompt() {
+            // Create password modal
+            const modal = document.createElement('div');
+            modal.id = 'passwordModal';
+            modal.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0,0,0,0.5);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                z-index: 1000;
+            `;
+            
+            modal.innerHTML = `
+                <div style="background: white; padding: 30px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); max-width: 400px; width: 90%;">
+                    <h3 style="margin: 0 0 20px 0; color: #1e3c72; text-align: center;">🔒 เข้าสู่ระบบจัดการ</h3>
+                    <div style="margin-bottom: 20px;">
+                        <label for="adminPassword" style="display: block; margin-bottom: 8px; color: #333; font-weight: 500;">รหัสผ่าน:</label>
+                        <input type="password" id="adminPassword" placeholder="กรุณากรอกรหัสผ่าน" style="width: 100%; padding: 12px; border: 2px solid #e1e5e9; border-radius: 8px; font-size: 16px; box-sizing: border-box;">
+                    </div>
+                    <div id="passwordError" style="color: #dc3545; font-size: 14px; margin-bottom: 15px; display: none;">❌ รหัสผ่านไม่ถูกต้อง</div>
+                    <div style="display: flex; gap: 10px;">
+                        <button onclick="checkPassword()" style="flex: 1; background: #667eea; color: white; border: none; padding: 12px; border-radius: 8px; font-size: 16px; cursor: pointer;">เข้าสู่ระบบ</button>
+                        <button onclick="closePasswordModal()" style="flex: 1; background: #6c757d; color: white; border: none; padding: 12px; border-radius: 8px; font-size: 16px; cursor: pointer;">ยกเลิก</button>
+                    </div>
+
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+            document.getElementById('adminPassword').focus();
+            
+            // Allow Enter key to submit
+            document.getElementById('adminPassword').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    checkPassword();
+                }
+            });
+        }
+
+        function checkPassword() {
+            const password = document.getElementById('adminPassword').value;
+            const correctPassword = '2550'; // You can change this password
+            
+            if (password === correctPassword) {
+                closePasswordModal();
+                document.getElementById('adminPanel').style.display = 'block';
+                updateAdminStats();
+                updateRegistrationTable();
+            } else {
+                document.getElementById('passwordError').style.display = 'block';
+                document.getElementById('adminPassword').value = '';
+                document.getElementById('adminPassword').focus();
+            }
+        }
+
+        function closePasswordModal() {
+            const modal = document.getElementById('passwordModal');
+            if (modal) {
+                modal.remove();
+            }
+        }
+
+        function hideAdminPanel() {
+            document.getElementById('adminPanel').style.display = 'none';
+        }
+
+        function updateAdminStats() {
+            const total = registrationDatabase.length;
+            const maleCount = registrationDatabase.filter(r => r.gender === 'male').length;
+            const femaleCount = registrationDatabase.filter(r => r.gender === 'female').length;
+            
+            document.getElementById('totalCount').textContent = total;
+            document.getElementById('maleCount').textContent = maleCount;
+            document.getElementById('femaleCount').textContent = femaleCount;
+        }
+
+        function updateRegistrationTable() {
+            const tbody = document.getElementById('registrationTableBody');
+            
+            if (registrationDatabase.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" style="padding: 20px; text-align: center; color: #666;">ยังไม่มีข้อมูลผู้ลงทะเบียน</td></tr>';
+                return;
+            }
+            
+            tbody.innerHTML = registrationDatabase.map(reg => `
+                <tr style="border-bottom: 1px solid #f0f0f0;">
+                    <td style="padding: 12px; font-size: 14px;">#${reg.id.toString().padStart(4, '0')}</td>
+                    <td style="padding: 12px; font-size: 14px;">${reg.fullName}</td>
+                    <td style="padding: 12px; font-size: 14px;">${reg.age} ปี</td>
+                    <td style="padding: 12px; font-size: 14px;">${reg.gender === 'male' ? '👨 ชาย' : '👩 หญิง'}</td>
+                    <td style="padding: 12px; font-size: 14px;">${reg.phone}</td>
+                    <td style="padding: 12px; font-size: 14px;">${new Date(reg.registrationDate).toLocaleDateString('th-TH')}</td>
+                </tr>
+            `).join('');
+        }
+
+        function exportData() {
+            if (registrationDatabase.length === 0) {
+                alert('ไม่มีข้อมูลให้ส่งออก');
+                return;
+            }
+            
+            const csvContent = [
+                ['ID', 'ชื่อ-นามสกุล', 'อายุ', 'เพศ', 'โทรศัพท์', 'ที่อยู่', 'วันที่ลงทะเบียน'],
+                ...registrationDatabase.map(reg => [
+                    reg.id,
+                    reg.fullName,
+                    reg.age,
+                    reg.gender === 'male' ? 'ชาย' : 'หญิง',
+                    reg.phone,
+                    reg.address,
+                    new Date(reg.registrationDate).toLocaleDateString('th-TH')
+                ])
+            ].map(row => row.join(',')).join('\n');
+            
+            const blob = new Blob(['\ufeff' + csvContent], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = samsung_life_registrations_${new Date().toISOString().split('T')[0]}.csv;
+            link.click();
+        }
+
+        function clearAllData() {
+            if (registrationDatabase.length === 0) {
+                alert('ไม่มีข้อมูลให้ลบ');
+                return;
+            }
+            
+            if (confirm(คุณแน่ใจหรือไม่ที่จะลบข้อมูลผู้ลงทะเบียนทั้งหมด ${registrationDatabase.length} รายการ?)) {
+                registrationDatabase = [];
+                registrationCounter = 1;
+                localStorage.removeItem('samsungLifeRegistrations');
+                updateAdminStats();
+                updateRegistrationTable();
+                alert('ลบข้อมูลทั้งหมดเรียบร้อยแล้ว');
+            }
+        }
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'98f5c43d2499d326',t:'MTc2MDU5ODk0Mi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
